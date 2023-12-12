@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">MyExampleApp</string>
+    <string name="get_new_duck">Get new duck</string>
+    <string name="save_duck">Save duck</string>
+    <string name="duck_image_content_desc">Image of the currently loaded duck</string>
+</resources>
