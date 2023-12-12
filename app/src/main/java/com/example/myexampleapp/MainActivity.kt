@@ -39,12 +39,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         val rv = binding.rvDuckList
-
-        rv.adapter = MyAdapter(vm.duckImagesList)
+        val onClick = object : MyAdapter.OnClickDeleteListener {
+            override fun onClickDelete(duckImage: com.example.myexampleapp.model.DuckImage) {
+                vm.deleteDuckImage(duckImage)
+            }
+        }
+        rv.adapter = MyAdapter(vm.duckImagesList, onClick)
         rv.layoutManager = GridLayoutManager(this, 3)
 
         vm.duckImagesList.observe(this) {
-            rv.adapter!!.notifyItemChanged(it.size - 1)
+            rv.adapter!!.notifyDataSetChanged()
         }
     }
 }

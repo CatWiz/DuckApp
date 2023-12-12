@@ -44,4 +44,11 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
             _duckImagesList.value = repo.getAllDuckImages()
         }
     }
+
+    fun deleteDuckImage(duckImage: DuckImage) {
+        viewModelScope.launch {
+            repo.deleteDuckImage(duckImage)
+            _duckImagesList.value = repo.getAllDuckImages()
+        }
+    }
 }

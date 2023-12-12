@@ -41,4 +41,8 @@ class MyRepo(private val myDao: MyDao) {
     suspend fun updateDuckImage(duckImage: DuckImage) {
         myDao.updateDuckImage(duckImage)
     }
+
+    suspend fun deleteDuckImage(duckImage: DuckImage) {
+        myDao.deleteDuckImage(duckImage.filePath, duckImage.dateAdded)
+    }
 }

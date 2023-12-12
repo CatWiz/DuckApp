@@ -30,5 +30,8 @@ interface MyDao {
     @Query("DELETE FROM duck_images")
     suspend fun deleteAllDuckImages()
 
+    @Query("DELETE FROM duck_images WHERE file_path = :filePath AND save_date = :saveDate")
+    suspend fun deleteDuckImage(filePath: String, saveDate: Date)
+
 
 }
