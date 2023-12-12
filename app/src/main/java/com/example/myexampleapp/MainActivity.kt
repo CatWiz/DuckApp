@@ -27,6 +27,7 @@ class MainActivity : AppCompatActivity() {
                 Picasso
                     .get()
                     .load(it.filePath)
+                    .placeholder(R.drawable.load_icon)
                     .into(binding.ivDuck)
             }
         }

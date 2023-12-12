@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.example.myexampleapp.R
 import com.example.myexampleapp.databinding.ImageItemBinding
 import com.example.myexampleapp.model.DuckImage
 import com.squareup.picasso.MemoryPolicy
@@ -40,7 +41,9 @@ class MyAdapter (
             Picasso
                 .get()
                 .load(item.filePath)
+                .placeholder(R.drawable.load_icon)
                 .into(binding.ivDuck)
+            
             binding.btnDelete.setOnClickListener {
                  onClickDeleteListener.onClickDelete(item)
             }
