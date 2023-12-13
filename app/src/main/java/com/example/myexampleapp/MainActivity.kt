@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myexampleapp.adapter.MyAdapter
 import com.example.myexampleapp.databinding.ActivityMainBinding
+import com.example.myexampleapp.model.DuckImage
 import com.example.myexampleapp.model.MyViewModel
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
@@ -41,7 +42,7 @@ class MainActivity : AppCompatActivity() {
 
         val rv = binding.rvDuckList
         val onClick = object : MyAdapter.OnClickDeleteListener {
-            override fun onClickDelete(duckImage: com.example.myexampleapp.model.DuckImage) {
+            override fun onClickDelete(duckImage: DuckImage) {
                 vm.deleteDuckImage(duckImage)
             }
         }

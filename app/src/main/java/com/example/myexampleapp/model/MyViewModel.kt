@@ -38,17 +38,23 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    private fun refreshDuckImagesList() {
+        viewModelScope.launch {
+            _duckImagesList.value = repo.getAllDuckImages().sortedByDescending { it.dateAdded }
+        }
+    }
+
     fun saveCurrentDuckImage() {
         viewModelScope.launch {
             repo.insertDuckImage(_currentDuckImage.value!!)
-            _duckImagesList.value = repo.getAllDuckImages()
+            refreshDuckImagesList()
         }
     }
 
     fun deleteDuckImage(duckImage: DuckImage) {
         viewModelScope.launch {
             repo.deleteDuckImage(duckImage)
-            _duckImagesList.value = repo.getAllDuckImages()
+            refreshDuckImagesList()
         }
     }
 }
