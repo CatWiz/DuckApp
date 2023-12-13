@@ -8,7 +8,7 @@ import java.util.Date
 
 @Entity(
     tableName = "duck_images",
-    primaryKeys = ["file_path", "save_date"]
+    primaryKeys = ["file_path"]
 )
 data class DuckImage(
     @ColumnInfo(name = "file_path")
