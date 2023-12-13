@@ -12,13 +12,9 @@ class MyApp : Application() {
         )
     }
 
-    val myDao by lazy {
-        myDatabase.myDao()
-    }
-
     val myRepo by lazy {
         MyRepo(
-            myDao
+            myDatabase.myDao()
         )
     }
 }

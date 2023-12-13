@@ -6,7 +6,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.myexampleapp.MyApp
-import com.example.myexampleapp.R
 import kotlinx.coroutines.launch
 
 class MyViewModel(application: Application) : AndroidViewModel(application) {
@@ -32,8 +31,8 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     fun getNewDuckImage() {
         viewModelScope.launch {
             val duckImage = repo.loadDuckImage()
-            if (duckImage != null) {
-                _currentDuckImage.value = duckImage!!
+            duckImage?.let {
+                _currentDuckImage.value = it
             }
         }
     }
@@ -46,7 +45,7 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
 
     fun saveCurrentDuckImage() {
         viewModelScope.launch {
-            repo.insertDuckImage(_currentDuckImage.value!!)
+            _currentDuckImage.value?.let { repo.insertDuckImage(it) }
             refreshDuckImagesList()
         }
     }
