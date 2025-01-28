@@ -11,20 +11,20 @@ import kotlinx.coroutines.launch
 class MyViewModel(application: Application) : AndroidViewModel(application) {
     private val repo = (application as MyApp).myRepo
 
-    private var _currentDuckImage: MutableLiveData<DuckImage?> = MutableLiveData<DuckImage?>().apply {
+    private var _currentDuckImage: MutableLiveData<IDuckImage?> = MutableLiveData<IDuckImage?>().apply {
         value = null
     }
-    var currentDuckImage: LiveData<DuckImage?> = _currentDuckImage
+    var currentDuckImage: LiveData<IDuckImage?> = _currentDuckImage
 
-    private var _duckImagesList: MutableLiveData<List<DuckImage>> = MutableLiveData<List<DuckImage>>().apply {
+    private var _duckImagesList: MutableLiveData<List<IDuckImage>> = MutableLiveData<List<IDuckImage>>().apply {
         value = emptyList()
     }
-    val duckImagesList: LiveData<List<DuckImage>> = _duckImagesList
+    val duckImagesList: LiveData<List<IDuckImage>> = _duckImagesList
 
     init {
         viewModelScope.launch {
             _currentDuckImage.value = repo.loadDuckImage()
-            _duckImagesList.value = repo.getAllDuckImages()
+            refreshDuckImagesList()
         }
     }
 
@@ -39,13 +39,21 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
 
     private fun refreshDuckImagesList() {
         viewModelScope.launch {
-            _duckImagesList.value = repo.getAllDuckImages().sortedByDescending { it.dateAdded }
+            _duckImagesList.value = repo.getAllDuckImages()
+                .plus(repo.getAllDuckImagesWithMessage())
+                .sortedByDescending { it.dateAdded() }
         }
     }
 
     fun saveCurrentDuckImage() {
         viewModelScope.launch {
-            _currentDuckImage.value?.let { repo.insertDuckImage(it) }
+            _currentDuckImage.value?.let {
+                if (it is DuckImage) {
+                    repo.insertDuckImage(it)
+                } else if (it is DuckImageWithMessage) {
+                    repo.insertDuckImageWithMessage(it)
+                }
+            }
             refreshDuckImagesList()
         }
     }
@@ -53,6 +61,13 @@ class MyViewModel(application: Application) : AndroidViewModel(application) {
     fun deleteDuckImage(duckImage: DuckImage) {
         viewModelScope.launch {
             repo.deleteDuckImage(duckImage)
+            refreshDuckImagesList()
+        }
+    }
+
+    fun deleteDuckImageWithMessage(duckImage: DuckImageWithMessage) {
+        viewModelScope.launch {
+            repo.deleteDuckImageWithMessage(duckImage)
             refreshDuckImagesList()
         }
     }

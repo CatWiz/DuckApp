@@ -8,6 +8,7 @@ import com.example.myexampleapp.dao.MyDao
 @Database(
     entities = [
         com.example.myexampleapp.model.DuckImage::class,
+        com.example.myexampleapp.model.DuckImageWithMessage::class,
     ],
     version = 1,
     exportSchema = false

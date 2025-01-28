@@ -7,8 +7,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myexampleapp.adapter.MyAdapter
 import com.example.myexampleapp.databinding.ActivityMainBinding
 import com.example.myexampleapp.model.DuckImage
+import com.example.myexampleapp.model.DuckImageWithMessage
+import com.example.myexampleapp.model.IDuckImage
 import com.example.myexampleapp.model.MyViewModel
-import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 
 class MainActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
             {
                 Picasso
                     .get()
-                    .load(it.filePath)
+                    .load(it.filePath())
                     .placeholder(R.drawable.load_icon)
                     .into(binding.ivDuck)
             }
@@ -42,8 +43,15 @@ class MainActivity : AppCompatActivity() {
 
         val rv = binding.rvDuckList
         val onClick = object : MyAdapter.OnClickDeleteListener {
-            override fun onClickDelete(duckImage: DuckImage) {
-                vm.deleteDuckImage(duckImage)
+            override fun onClickDelete(duckImage: IDuckImage, deleteType: Int) {
+                when (deleteType) {
+                    IDuckImage.DUCK_IMAGE -> {
+                        vm.deleteDuckImage(duckImage as DuckImage)
+                    }
+                    IDuckImage.DUCK_IMAGE_WITH_MESSAGE -> {
+                        vm.deleteDuckImageWithMessage(duckImage as DuckImageWithMessage)
+                    }
+                }
             }
         }
         rv.adapter = MyAdapter(vm.duckImagesList, onClick)
